@@ -66,5 +66,14 @@ class Dual:
             raise f"{type(self)} and {type(other)} are not compatible for the the operation /"
 
     
-
+x=Dual(4,1)
+y=x*x
+z=y/x
+sub=y-x
+add=x+x
+print(x)        ## 4+1e
+print(y)        ## 16+8e
+print(z)        ## 4+1e
+print(sub)      ## 12+7e
+print(add)      ## 8+2e
         
