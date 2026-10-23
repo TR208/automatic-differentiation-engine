@@ -75,8 +75,8 @@ class Dual:
             )
         elif (isinstance(other,int) or isinstance(other,float) or isinstance(other,complex)):
             return Dual(
-                self.value**other.value,
-                other.value*(self.value**(other.value-1))*self.derivative
+                self.value**other,
+                other*(self.value**(other-1))*self.derivative
             )
         else:
             raise f"{type(self)} and {type(other)} are not compatible for the the operation **"
@@ -94,9 +94,12 @@ y=x*x
 z=y/x
 sub=y-x
 add=x+x
-print(x)        ## 4+1e
-print(y)        ## 16+8e
-print(z)        ## 4+1e
-print(sub)      ## 12+7e
-print(add)      ## 8+2e
-        
+exp1=x**2
+exp2=exp1**x
+print(x)        ##should be --- 4+1e
+print(y)        ##should be --- 16+8e
+print(z)        ##should be --- 4+1e
+print(sub)      ##should be --- 12+7e
+print(add)      ##should be --- 8+2e
+print(exp1)     ##should be --- 16+8e        
+print(exp2)     ##should be --- 65536+312,776.4e
