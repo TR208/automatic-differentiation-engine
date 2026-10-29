@@ -89,7 +89,45 @@ class Dual:
             )
         else:
             raise f"{type(self)} and {type(other)} are not compatible for the the operation **"
-x=Dual(4,1)
+    
+    # Member 3 code
+    
+    def sin(self): 
+        return Dual(
+            np.sin(self.value),
+            np.cos(self.value)*self.derivative
+        )
+
+    def cos(self):
+        return Dual(
+            np.cos(self.value),
+            -np.sin(self.value)*self.derivative
+        )
+
+    def tan(self):
+        cos_val = np.cos(self.value)
+        if np.isclose(cos_val, 0.0, atol=1e-15):
+            raise ValueError(f"Domain error: tan(x) is undefined at x = {self.value} (cos(x) = 0).")
+        return Dual(
+            np.tan(self.value),
+            self.derivative / np.cos(self.value)**2
+        )
+    
+    def exp(self):
+        val = np.exp(self.value)
+        return Dual(val, val * self.derivative)
+    
+    def log(self):
+        if isinstance(self.value, complex):
+            raise TypeError("Domain error: log is restricted to positive real numbers.")
+        if self.value <= 0:
+            raise ValueError(f"Domain error: log(x) is undefined for x = {self.value} <= 0.")
+        return Dual(
+            np.log(self.value),
+            self.derivative / self.value
+        )
+
+x=Dual(4+3j,1)
 y=x*x
 z=y/x
 sub=y-x
@@ -103,3 +141,26 @@ print(sub)      ##should be --- 12+7e
 print(add)      ##should be --- 8+2e
 print(exp1)     ##should be --- 16+8e        
 print(exp2)     ##should be --- 65536+312,776.4e
+
+
+# ================= Member 3 Tests =================
+m = Dual(2.0, 1.0)
+
+e = m.exp()
+l = m.log()
+s = m.sin()
+c = m.cos()
+t = m.tan()
+
+print(e)      ## should be --- 7.3891 + 7.3891ε
+print(l)      ## should be --- 0.6931 + 0.5ε
+print(s)      ## should be --- 0.9093 - 0.4161ε
+print(c)      ## should be --- -0.4161 - 0.9093ε
+print(t)      ## should be --- -2.1850 + 5.7744ε
+
+# Composed functions (Chain Rule)
+f1 = (m.exp()).sin()      # sin(exp(x))
+f2 = (m**2 + 3*m).log()   # log(x^2 + 3x)
+
+print(f1)     ## should be --- 0.8980 + 3.2508ε
+print(f2)     ## should be --- 2.3026 + 0.7ε
