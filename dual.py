@@ -62,7 +62,7 @@ class Dual:
         if (isinstance(other,int) or isinstance(other,float) or isinstance(other,complex)):
             return Dual(
                 other/self.value,
-                -other/(self.derivative**2))
+                -other*self.derivative/(self.value**2))
             
         else:
             raise f"{type(self)} and {type(other)} are not compatible for the the operation /"
@@ -85,7 +85,7 @@ class Dual:
         if (isinstance(other,int) or isinstance(other,float) or isinstance(other,complex)):
             return Dual(
                 other**self.value,
-                (other**self.value)*self.derivative*np.log(self.value)
+                (other**self.value)*self.derivative*np.log(other)
             )
         else:
             raise f"{type(self)} and {type(other)} are not compatible for the the operation **"
