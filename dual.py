@@ -49,10 +49,14 @@ class Dual:
 
     def __truediv__(self, other):
         if isinstance(other,Dual):
-            return Dual(
-                self.value/other.value,
-                (self.derivative*other.value-other.derivative*self.value)/((other.value) **2)
-            )
+            try:
+                return Dual(
+                    self.value/other.value,
+                    (self.derivative*other.value-other.derivative*self.value)/((other.value) **2)
+                )
+            except ZeroDivisionError:
+                print("Error! You can divide with a function whose value is 0.")
+        
         elif(isinstance(other,int) or isinstance(other,float) or isinstance(other,complex)):
             return self*(1/other)
         else:
@@ -60,9 +64,12 @@ class Dual:
 
     def __rtruediv__(self, other):
         if (isinstance(other,int) or isinstance(other,float) or isinstance(other,complex)):
-            return Dual(
-                other/self.value,
-                -other*self.derivative/(self.value**2))
+            try:
+                return Dual(
+                    other/self.value,
+                    -other*self.derivative/(self.value**2))
+            except ZeroDivisionError:
+                print("Error! You can divide with a function whose value is 0.")
             
         else:
             raise f"{type(self)} and {type(other)} are not compatible for the the operation /"
@@ -71,7 +78,7 @@ class Dual:
         if(isinstance(other,Dual)):
             return Dual(
                 self.value**other.value,
-                other.value*(self.value**(other.value-1))*self.derivative + (self.value**other.value)*other.derivative*np.log(self.value)
+                other.value*(self.value**(other.value-1))*self.derivative + (self.value**other.value)*other.derivative*np.log(self.value,dtype=complex)
             )
         elif (isinstance(other,int) or isinstance(other,float) or isinstance(other,complex)):
             return Dual(
@@ -85,7 +92,7 @@ class Dual:
         if (isinstance(other,int) or isinstance(other,float) or isinstance(other,complex)):
             return Dual(
                 other**self.value,
-                (other**self.value)*self.derivative*np.log(other)
+                (other**self.value)*self.derivative*np.log(other,dtype=complex)
             )
         else:
             raise f"{type(self)} and {type(other)} are not compatible for the the operation **"
