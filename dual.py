@@ -14,7 +14,7 @@ class Dual:
         elif(isinstance(other,int) or isinstance(other,float) or isinstance(other,complex)):
             return Dual(self.value+other,self.derivative)
         else:
-            raise f"{type(self)} and {type(other)} are not compatible for the the operation +"
+            raise TypeError(f"{type(self)} and {type(other)} are not compatible for the the operation +")
 
     def __radd__(self, other):
         return self+other
@@ -25,7 +25,7 @@ class Dual:
         elif(isinstance(other,int) or isinstance(other,float) or isinstance(other,complex)):
             return Dual(self.value-other,self.derivative)
         else:
-            raise f"{type(self)} and {type(other)} are not compatible for the the operation -"
+            raise TypeError(f"{type(self)} and {type(other)} are not compatible for the the operation -")
 
     def __rsub__(self, other):
         return (-1)*self+other
@@ -42,7 +42,7 @@ class Dual:
                 self.derivative*other
             )
         else:
-            raise f"{type(self)} and {type(other)} are not compatible for the the operation *"
+            raise TypeError(f"{type(self)} and {type(other)} are not compatible for the the operation *")
 
     def __rmul__(self, other):
         return self*other
@@ -55,12 +55,12 @@ class Dual:
                     (self.derivative*other.value-other.derivative*self.value)/((other.value) **2)
                 )
             except ZeroDivisionError:
-                raise "Error! You cannot divide with a function whose value is 0."
+                raise ZeroDivisionError("Error! You cannot divide with a function whose value is 0.")
         
         elif(isinstance(other,int) or isinstance(other,float) or isinstance(other,complex)):
             return self*(1/other)
         else:
-            raise f"{type(self)} and {type(other)} are not compatible for the the operation /"
+            raise TypeError(f"{type(self)} and {type(other)} are not compatible for the the operation /")
 
     def __rtruediv__(self, other):
         if (isinstance(other,int) or isinstance(other,float) or isinstance(other,complex)):
@@ -69,10 +69,10 @@ class Dual:
                     other/self.value,
                     -other*self.derivative/(self.value**2))
             except ZeroDivisionError:
-                raise "Error! You cannot divide with a function whose value is 0."
+                raise ZeroDivisionError("Error! You cannot divide with a function whose value is 0.")
             
         else:
-            raise f"{type(self)} and {type(other)} are not compatible for the the operation /"
+            raise TypeError(f"{type(self)} and {type(other)} are not compatible for the the operation /")
 
     def __pow__(self, other):
         if(isinstance(other,Dual)):
@@ -90,7 +90,7 @@ class Dual:
                 other*(self.value**(other-1))*self.derivative
             )
         else:
-            raise f"{type(self)} and {type(other)} are not compatible for the the operation **"
+            raise TypeError(f"{type(self)} and {type(other)} are not compatible for the the operation **")
 
     def __rpow__(self, other):
         if (isinstance(other,int) or isinstance(other,float) or isinstance(other,complex)):
@@ -99,7 +99,7 @@ class Dual:
                 (other**self.value)*self.derivative*np.log(other,dtype=complex)
             )
         else:
-            raise f"{type(self)} and {type(other)} are not compatible for the the operation **"
+            raise TypeError(f"{type(self)} and {type(other)} are not compatible for the the operation **")
 x=Dual(4,1)
 y=x*x
 z=y/x
@@ -114,4 +114,3 @@ print(sub)      ##should be --- 12+7e
 print(add)      ##should be --- 8+2e
 print(exp1)     ##should be --- 16+8e        
 print(exp2)     ##should be --- 65536+312,776.4e
-print(Dual(0,1)**0)
