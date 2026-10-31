@@ -55,7 +55,7 @@ class Dual:
                     (self.derivative*other.value-other.derivative*self.value)/((other.value) **2)
                 )
             except ZeroDivisionError:
-                print("Error! You can divide with a function whose value is 0.")
+                raise "Error! You cannot divide with a function whose value is 0."
         
         elif(isinstance(other,int) or isinstance(other,float) or isinstance(other,complex)):
             return self*(1/other)
@@ -69,18 +69,22 @@ class Dual:
                     other/self.value,
                     -other*self.derivative/(self.value**2))
             except ZeroDivisionError:
-                print("Error! You can divide with a function whose value is 0.")
+                raise "Error! You cannot divide with a function whose value is 0."
             
         else:
             raise f"{type(self)} and {type(other)} are not compatible for the the operation /"
 
     def __pow__(self, other):
         if(isinstance(other,Dual)):
+            if(self.value==0 and other.value==0):
+                raise ValueError("Raising 0 to the power of 0 is not defined.")
             return Dual(
                 self.value**other.value,
                 other.value*(self.value**(other.value-1))*self.derivative + (self.value**other.value)*other.derivative*np.log(self.value,dtype=complex)
             )
         elif (isinstance(other,int) or isinstance(other,float) or isinstance(other,complex)):
+            if(self.value==0 and other==0):
+                raise ValueError("Raising 0 to the power of 0 is not defined.")
             return Dual(
                 self.value**other,
                 other*(self.value**(other-1))*self.derivative
@@ -110,3 +114,4 @@ print(sub)      ##should be --- 12+7e
 print(add)      ##should be --- 8+2e
 print(exp1)     ##should be --- 16+8e        
 print(exp2)     ##should be --- 65536+312,776.4e
+print(Dual(0,1)**0)
