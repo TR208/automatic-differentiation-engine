@@ -92,7 +92,6 @@ if __name__ == "__main__":
         ("zero derivative seed", lambda: 2 / Dual(4, 0), (0.5, 0)),
         ("scaled derivative seed", lambda: Dual(2, 3)**2, (4, 12)),
         ("reverse power", lambda: 3**Dual(2, 1), (9, 9 * math.log(3))),
-        ("zero exponent at zero", lambda: Dual(0, 1)**0, (1, 0)),
     ]
     results = [check(name, calculation, expected)
                for name, calculation, expected in arithmetic]
@@ -155,6 +154,7 @@ if __name__ == "__main__":
         ("division by numeric zero", lambda: Dual(1, 1) / 0, ZeroDivisionError),
         ("log(0)", lambda: Dual(0, 1).log(), ValueError),
         ("log(-1)", lambda: Dual(-1, 1).log(), ValueError),
+        ("zero exponent at zero", lambda: Dual(0, 1)**0, ValueError),
     ]
     results.extend(check_error(name, calculation, expected_error)
                    for name, calculation, expected_error in invalid_inputs)
