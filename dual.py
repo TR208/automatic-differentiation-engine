@@ -138,38 +138,39 @@ class Dual:
         )
 
 
-x=Dual(4,1)
-y=x*x
-z=y/x
-sub=y-x
-add=x+x
-exp1=x**2
-exp2=exp1**x
-print(x)        ##should be --- 4+1e
-print(y)        ##should be --- 16+8e
-print(z)        ##should be --- 4+1e
-print(sub)      ##should be --- 12+7e
-print(add)      ##should be --- 8+2e
-print(exp1)     ##should be --- 16+8e        
-print(exp2)     ##should be --- 65536+312,776.4e
-# ================= Member 3 Tests =================
-m = Dual(2.0, 1.0)
+if __name__ == "__main__":
+    x=Dual(4,1)
+    y=x*x
+    z=y/x
+    sub=y-x
+    add=x+x
+    exp1=x**2
+    exp2=exp1**x
+    print(x)        ##should be --- 4+1e
+    print(y)        ##should be --- 16+8e
+    print(z)        ##should be --- 4+1e
+    print(sub)      ##should be --- 12+7e
+    print(add)      ##should be --- 8+2e
+    print(exp1)     ##should be --- 16+8e
+    print(exp2)     ##should be --- 65536+312,776.4e
+    # ================= Member 3 Tests =================
+    m = Dual(2.0, 1.0)
 
-e = m.exp()
-l = m.log()
-s = m.sin()
-c = m.cos()
-t = m.tan()
+    e = m.exp()
+    l = m.log()
+    s = m.sin()
+    c = m.cos()
+    t = m.tan()
 
-print(e)      ## should be --- 7.3891 + 7.3891ε
-print(l)      ## should be --- 0.6931 + 0.5ε
-print(s)      ## should be --- 0.9093 - 0.4161ε
-print(c)      ## should be --- -0.4161 - 0.9093ε
-print(t)      ## should be --- -2.1850 + 5.7744ε
+    print(e)      ## should be --- 7.3891 + 7.3891ε
+    print(l)      ## should be --- 0.6931 + 0.5ε
+    print(s)      ## should be --- 0.9093 - 0.4161ε
+    print(c)      ## should be --- -0.4161 - 0.9093ε
+    print(t)      ## should be --- -2.1850 + 5.7744ε
 
-# Composed functions (Chain Rule)
-f1 = (m.exp()).sin()      # sin(exp(x))
-f2 = (m**2 + 3*m).log()   # log(x^2 + 3x)
+    # Composed functions (Chain Rule)
+    f1 = (m.exp()).sin()      # sin(exp(x))
+    f2 = (m**2 + 3*m).log()   # log(x^2 + 3x)
 
-print(f1)     ## should be --- 0.8980 + 3.2508ε
-print(f2)     ## should be --- 2.3026 + 0.7ε
+    print(f1)     ## should be --- 0.8980 + 3.2508ε
+    print(f2)     ## should be --- 2.3026 + 0.7ε
